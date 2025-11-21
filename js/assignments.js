@@ -16,8 +16,13 @@ class AssignmentManager {
         console.log('🔄 Loading data for user:', this.currentUser);
         
         if (this.currentUser) {
+            // СНАЧАЛА пытаемся загрузить кэшированные предметы для фильтра
+            if (this.currentUser.role === 'student') {
+                this.loadCachedSubjects();
+            }
+            
             await this.updateStatistics();
-            await this.loadSubjects(); // Сначала загружаем предметы (включая фильтр)
+            await this.loadSubjects(); // Затем загружаем актуальные предметы
             await this.loadAssignments();
             await this.loadSubmissions();
             this.setupAssignmentForm();
@@ -168,7 +173,7 @@ class AssignmentManager {
             const response = await window.apiClient.getSubjects();
             console.log('✅ Subjects loaded:', response.subjects);
             
-            // ЗАПОЛНЯЕМ ФИЛЬТР ПРЕДМЕТОВ ДЛЯ СТУДЕНТА
+            // ЗАПОЛНЯЕМ ФИЛЬТР ПРЕДМЕТОВ ДЛЯ СТУДЕНТА - ВСЕГДА
             this.populateSubjectFilter(response.subjects);
             
             if (this.currentUser.role === 'student') {
@@ -178,7 +183,31 @@ class AssignmentManager {
             }
         } catch (error) {
             console.error('❌ Error loading subjects:', error);
+            // Даже при ошибке пытаемся заполнить фильтр из localStorage
+            const cachedSubjects = JSON.parse(localStorage.getItem('cachedSubjects') || '[]');
+            if (cachedSubjects.length > 0) {
+                this.populateSubjectFilter(cachedSubjects);
+            }
         }
+    }
+
+    // Метод для сохранения предметов в кэш
+    cacheSubjects(subjects) {
+        if (subjects && subjects.length > 0) {
+            localStorage.setItem('cachedSubjects', JSON.stringify(subjects));
+            console.log('📦 Subjects cached:', subjects.length);
+        }
+    }
+
+    // Метод для загрузки предметов из кэша
+    loadCachedSubjects() {
+        const cachedSubjects = JSON.parse(localStorage.getItem('cachedSubjects') || '[]');
+        if (cachedSubjects.length > 0) {
+            console.log('📦 Loading cached subjects:', cachedSubjects.length);
+            this.populateSubjectFilter(cachedSubjects);
+            return true;
+        }
+        return false;
     }
 
     // МЕТОД ДЛЯ ЗАПОЛНЕНИЯ ФИЛЬТРА ПРЕДМЕТОВ
@@ -198,6 +227,9 @@ class AssignmentManager {
         subjectFilter.innerHTML = '<option value="">Все предметы</option>';
         
         if (subjects && subjects.length > 0) {
+            // Кэшируем предметы
+            this.cacheSubjects(subjects);
+            
             subjects.forEach(subject => {
                 const option = document.createElement('option');
                 option.value = subject.name;
@@ -965,4 +997,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const assignments = await window.apiClient.getAssignments();
         localStorage.setItem('currentAssignments', JSON.stringify(assignments.assignments || []));
     };
+
+    // Периодическая проверка и обновление фильтра предметов для студентов
+    setInterval(() => {
+        const subjectFilter = document.getElementById('filterSubject');
+        const currentUser = window.authManager?.getCurrentUser();
+        
+        if (subjectFilter && currentUser?.role === 'student' && subjectFilter.options.length <= 1) {
+            console.log('🔄 Auto-refreshing subject filter for student...');
+            window.assignmentManager.loadSubjects();
+        }
+    }, 3000);
 });
