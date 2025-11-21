@@ -663,57 +663,55 @@ app.put('/api/submissions/:id/grade', authenticateToken, async (req, res) => {
   }
 });
 
-// ИСПРАВЛЕННЫЙ РОУТ ДЛЯ ПРЕДМЕТОВ
+// ИСПРАВЛЕННЫЙ РОУТ ДЛЯ ПРЕДМЕТОВ - ВЕРСИЯ ДЛЯ СТУДЕНТОВ
 app.get('/api/subjects', authenticateToken, async (req, res) => {
   try {
     let subjects = [];
 
     if (req.user.role === 'student') {
       console.log(`🎓 Loading subjects for student: ${req.user.id}`);
-      subjects = await pool.query(
-        `SELECT DISTINCT s.* 
-         FROM subjects s 
-         JOIN assignments a ON s.id = a.subject_id 
-         JOIN user_groups ug ON ug.user_id = $1 
-         WHERE (ug.group_id IN (SELECT unnest(a.groups)) OR 'all' = ANY(a.groups))
-         AND a.is_published = true`,
+      
+      // Получаем группу студента
+      const groupResult = await pool.query(
+        `SELECT g.code 
+         FROM user_groups ug 
+         JOIN groups g ON ug.group_id = g.id 
+         WHERE ug.user_id = $1`,
         [req.user.id]
       );
+
+      if (groupResult.rows.length > 0) {
+        const groupCode = groupResult.rows[0].code;
+        console.log(`🎓 Student ${req.user.id} is in group: ${groupCode}`);
+        
+        // Получаем предметы из заданий, доступных для группы студента
+        subjects = await pool.query(
+          `SELECT DISTINCT s.id, s.name, s.code, s.description
+           FROM subjects s 
+           JOIN assignments a ON s.id = a.subject_id 
+           WHERE a.is_published = true 
+           AND ($1 = ANY(a.groups) OR 'all' = ANY(a.groups))
+           ORDER BY s.name`,
+          [groupCode]
+        );
+        
+        console.log(`📚 Found ${subjects.rows.length} subjects for student group ${groupCode}`);
+      } else {
+        console.log(`⚠️ Student ${req.user.id} has no group assigned`);
+        subjects = { rows: [] };
+      }
     } else {
       console.log(`👨‍🏫 Loading subjects for teacher: ${req.user.id}`);
       subjects = await pool.query(
-        `SELECT s.* 
+        `SELECT DISTINCT s.id, s.name, s.code, s.description
          FROM subjects s 
          JOIN user_subjects us ON s.id = us.subject_id 
-         WHERE us.user_id = $1`,
+         WHERE us.user_id = $1
+         ORDER BY s.name`,
         [req.user.id]
       );
       
-      // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА - если у преподавателя нет предметов, назначаем все
-      if (subjects.rows.length === 0) {
-        console.log(`⚠️ Teacher ${req.user.id} has no subjects assigned. Assigning all subjects...`);
-        
-        const allSubjects = await pool.query('SELECT id FROM subjects');
-        for (const subject of allSubjects.rows) {
-          await pool.query(
-            'INSERT INTO user_subjects (user_id, subject_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
-            [req.user.id, subject.id]
-          );
-        }
-        
-        // Повторно загружаем предметы
-        subjects = await pool.query(
-          `SELECT s.* 
-           FROM subjects s 
-           JOIN user_subjects us ON s.id = us.subject_id 
-           WHERE us.user_id = $1`,
-          [req.user.id]
-        );
-        
-        console.log(`✅ Assigned ${subjects.rows.length} subjects to teacher ${req.user.id}`);
-      }
-      
-      console.log(`📚 Teacher ${req.user.id} has access to ${subjects.rows.length} subjects`);
+      console.log(`📚 Teacher ${req.user.id} has ${subjects.rows.length} subjects`);
     }
 
     res.json({ subjects: subjects.rows });

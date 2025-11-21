@@ -1,4 +1,4 @@
-// assignments.js - Исправленная версия для работы с API и файлами
+// assignments.js - ИСПРАВЛЕННАЯ версия с работающим фильтром предметов
 class AssignmentManager {
     constructor() {
         this.currentUser = null;
@@ -16,13 +16,9 @@ class AssignmentManager {
         console.log('🔄 Loading data for user:', this.currentUser);
         
         if (this.currentUser) {
-            // СНАЧАЛА пытаемся загрузить кэшированные предметы для фильтра
-            if (this.currentUser.role === 'student') {
-                this.loadCachedSubjects();
-            }
-            
+            // ЗАГРУЖАЕМ ПРЕДМЕТЫ ПЕРВЫМИ - это ключевое изменение!
+            await this.loadSubjects();
             await this.updateStatistics();
-            await this.loadSubjects(); // Затем загружаем актуальные предметы
             await this.loadAssignments();
             await this.loadSubmissions();
             this.setupAssignmentForm();
@@ -169,11 +165,11 @@ class AssignmentManager {
         if (!this.currentUser) return;
 
         try {
-            console.log('🔄 Loading subjects...');
+            console.log('🔄 Loading subjects for:', this.currentUser.role);
             const response = await window.apiClient.getSubjects();
             console.log('✅ Subjects loaded:', response.subjects);
             
-            // ЗАПОЛНЯЕМ ФИЛЬТР ПРЕДМЕТОВ ДЛЯ СТУДЕНТА - ВСЕГДА
+            // ВАЖНО: заполняем фильтр предметов ДО всего остального
             this.populateSubjectFilter(response.subjects);
             
             if (this.currentUser.role === 'student') {
@@ -183,31 +179,11 @@ class AssignmentManager {
             }
         } catch (error) {
             console.error('❌ Error loading subjects:', error);
-            // Даже при ошибке пытаемся заполнить фильтр из localStorage
-            const cachedSubjects = JSON.parse(localStorage.getItem('cachedSubjects') || '[]');
-            if (cachedSubjects.length > 0) {
-                this.populateSubjectFilter(cachedSubjects);
+            // Показываем уведомление об ошибке
+            if (window.notificationManager) {
+                window.notificationManager.show('Ошибка загрузки предметов', 'error');
             }
         }
-    }
-
-    // Метод для сохранения предметов в кэш
-    cacheSubjects(subjects) {
-        if (subjects && subjects.length > 0) {
-            localStorage.setItem('cachedSubjects', JSON.stringify(subjects));
-            console.log('📦 Subjects cached:', subjects.length);
-        }
-    }
-
-    // Метод для загрузки предметов из кэша
-    loadCachedSubjects() {
-        const cachedSubjects = JSON.parse(localStorage.getItem('cachedSubjects') || '[]');
-        if (cachedSubjects.length > 0) {
-            console.log('📦 Loading cached subjects:', cachedSubjects.length);
-            this.populateSubjectFilter(cachedSubjects);
-            return true;
-        }
-        return false;
     }
 
     // МЕТОД ДЛЯ ЗАПОЛНЕНИЯ ФИЛЬТРА ПРЕДМЕТОВ
@@ -227,9 +203,6 @@ class AssignmentManager {
         subjectFilter.innerHTML = '<option value="">Все предметы</option>';
         
         if (subjects && subjects.length > 0) {
-            // Кэшируем предметы
-            this.cacheSubjects(subjects);
-            
             subjects.forEach(subject => {
                 const option = document.createElement('option');
                 option.value = subject.name;
@@ -245,6 +218,8 @@ class AssignmentManager {
             }
         } else {
             console.log('⚠️ No subjects to populate filter');
+            // Если предметов нет, показываем сообщение
+            subjectFilter.innerHTML = '<option value="">Нет доступных предметов</option>';
         }
     }
 
@@ -285,7 +260,7 @@ class AssignmentManager {
             return `
                 <div class="course-card">
                     <h2 class="course-title">${subject.name}</h2>
-                    <div class="course-info">${subject.description}</div>
+                    <div class="course-info">${subject.description || 'Описание предмета'}</div>
                     <div class="course-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${progress}%"></div>
@@ -323,7 +298,7 @@ class AssignmentManager {
             return `
                 <div class="course-card">
                     <h2 class="course-title">${subject.name}</h2>
-                    <div class="course-info">${subject.description}</div>
+                    <div class="course-info">${subject.description || 'Описание предмета'}</div>
                     <div class="course-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${progress}%"></div>
@@ -800,7 +775,6 @@ class AssignmentManager {
         }
     }
 
-    // НОВАЯ ФУНКЦИЯ ДЛЯ ПРОСМОТРА РАБОТЫ С ВОЗМОЖНОСТЬЮ СКАЧИВАНИЯ
     async viewSubmission(submissionId) {
         try {
             const response = await fetch(`/api/submissions/${submissionId}`, {
@@ -827,7 +801,6 @@ class AssignmentManager {
         }
     }
 
-    // ОБНОВЛЕННАЯ ФУНКЦИЯ ДЛЯ ОТКРЫТИЯ МОДАЛЬНОГО ОКНА ОЦЕНКИ
     openGradingModal(submission) {
         // Заполняем информацию о студенте и задании
         document.getElementById('gradingStudentName').textContent = 
@@ -872,7 +845,6 @@ class AssignmentManager {
         document.getElementById('gradingModal').classList.add('active');
     }
 
-    // ФУНКЦИЯ ДЛЯ СКАЧИВАНИЯ ФАЙЛА
     async downloadFile(filename) {
         try {
             const response = await fetch(`/api/files/download/${filename}`, {
@@ -904,19 +876,16 @@ class AssignmentManager {
         }
     }
 
-    // ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ОРИГИНАЛЬНОГО ИМЕНИ ФАЙЛА
     getOriginalFileName(storedFilename) {
         // Удаляем префикс с timestamp из имени файла
         return storedFilename.split('-').slice(2).join('-');
     }
 
-    // ОБНОВЛЕННАЯ ФУНКЦИЯ ДЛЯ ОЦЕНКИ РАБОТЫ
     async gradeSubmission(submissionId) {
         // Загружаем информацию о работе и открываем модальное окно
         await this.viewSubmission(submissionId);
     }
 
-    // ОБНОВЛЕННАЯ ФУНКЦИЯ ОБРАБОТКИ ФОРМЫ ОЦЕНКИ
     async handleGradingSubmit(e) {
         e.preventDefault();
         
@@ -961,7 +930,6 @@ class AssignmentManager {
         }
     }
 
-    // Дополнительные методы
     viewGrade(submissionId) {
         const submissions = JSON.parse(localStorage.getItem('currentSubmissions') || '[]');
         const submission = submissions.find(s => s.id == submissionId);
@@ -997,15 +965,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const assignments = await window.apiClient.getAssignments();
         localStorage.setItem('currentAssignments', JSON.stringify(assignments.assignments || []));
     };
-
-    // Периодическая проверка и обновление фильтра предметов для студентов
-    setInterval(() => {
-        const subjectFilter = document.getElementById('filterSubject');
-        const currentUser = window.authManager?.getCurrentUser();
-        
-        if (subjectFilter && currentUser?.role === 'student' && subjectFilter.options.length <= 1) {
-            console.log('🔄 Auto-refreshing subject filter for student...');
-            window.assignmentManager.loadSubjects();
-        }
-    }, 3000);
 });
