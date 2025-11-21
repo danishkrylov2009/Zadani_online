@@ -1,0 +1,1486 @@
+/* style.css - Полная версия с группами и предметами */
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #ffffff;
+    --secondary-light: #34495e;
+    --success-color: #2ecc71;
+    --success-dark: #27ae60;
+    --warning-color: #f39c12;
+    --warning-dark: #d35400;
+    --danger-color: #e74c3c;
+    --danger-dark: #c0392b;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --text-color: #2d3748;
+    --text-light: #718096;
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+    --border-radius-lg: 12px;
+    --box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    --box-shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Контейнеры */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-fluid {
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 16px;
+}
+
+.btn-success {
+    background: var(--success-color);
+}
+
+    .btn-success:hover {
+        background: var(--success-dark);
+    }
+
+.btn-warning {
+    background: var(--warning-color);
+}
+
+    .btn-warning:hover {
+        background: var(--warning-dark);
+    }
+
+.btn-danger {
+    background: var(--danger-color);
+}
+
+    .btn-danger:hover {
+        background: var(--danger-dark);
+    }
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+    .btn-outline:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+.btn:disabled {
+    background: var(--dark-gray);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Карточки */
+.card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: var(--transition);
+    border: 1px solid var(--medium-gray);
+}
+
+    .card:hover {
+        box-shadow: var(--box-shadow-lg);
+        transform: translateY(-2px);
+    }
+
+.card-header {
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    transition: var(--transition);
+    background: white;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: var(--dark-gray);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Аутентификация */
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-panel {
+    width: 100%;
+    max-width: 440px;
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-lg);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 40px 32px;
+    text-align: center;
+}
+
+    .auth-header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .auth-header p {
+        opacity: 0.9;
+        font-size: 16px;
+    }
+
+.auth-tabs {
+    display: flex;
+    background: var(--light-gray);
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+    .auth-tab.active {
+        background: white;
+        border-bottom-color: var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .auth-tab:hover:not(.active) {
+        background: var(--medium-gray);
+        color: var(--text-color);
+    }
+
+.auth-content {
+    padding: 32px;
+}
+
+.auth-form {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+}
+
+    .auth-form.active {
+        display: block;
+    }
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+    .form-row .form-group {
+        flex: 1;
+        margin-bottom: 16px;
+    }
+
+.role-selection {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.role-option-btn {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    background: white;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    font-weight: 500;
+}
+
+    .role-option-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .role-option-btn.selected {
+        border-color: var(--primary-color);
+        background: var(--primary-color);
+        color: white;
+    }
+
+.password-strength {
+    height: 6px;
+    background: var(--medium-gray);
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.password-strength-fill {
+    height: 100%;
+    transition: var(--transition);
+    border-radius: 3px;
+}
+
+.password-strength.weak .password-strength-fill {
+    background: var(--danger-color);
+    width: 33%;
+}
+
+.password-strength.medium .password-strength-fill {
+    background: var(--warning-color);
+    width: 66%;
+}
+
+.password-strength.strong .password-strength-fill {
+    background: var(--success-color);
+    width: 100%;
+}
+
+.password-requirements {
+    font-size: 12px;
+    color: var(--dark-gray);
+    margin-top: 6px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--medium-gray);
+    color: var(--text-light);
+}
+
+    .auth-switch a {
+        color: var(--primary-color);
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+    font-weight: 500;
+}
+
+    .error-message.show {
+        display: block;
+    }
+
+/* Шапка */
+header {
+    background: white;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+}
+
+    .nav-links a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        padding: 12px 20px;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        position: relative;
+    }
+
+        .nav-links a:hover {
+            background: var(--light-gray);
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.user-role {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.user-group {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+/* Основной контент */
+main {
+    padding: 40px 0;
+    background: var(--light-gray);
+    min-height: calc(100vh - 76px);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.current-date {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Статистика */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    padding: 24px;
+    text-align: center;
+    transition: var(--transition);
+    border-left: 4px solid var(--primary-color);
+}
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Предметы */
+.courses-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.course-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    padding: 24px;
+    transition: var(--transition);
+    border-top: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+    .course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .course-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+    }
+
+.course-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+.course-info {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.course-progress {
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--medium-gray);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+    border-radius: 4px;
+    transition: width 0.8s ease;
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--dark-gray);
+    display: flex;
+    justify-content: space-between;
+}
+
+.course-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.assignments-count {
+    font-size: 14px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Фильтры */
+.filters-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+}
+
+    .filters-bar .form-control {
+        flex: 1;
+        min-width: 200px;
+    }
+
+/* Задания */
+.assignments-list {
+    display: grid;
+    gap: 16px;
+}
+
+.assignment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--primary-color);
+}
+
+    .assignment-item:hover {
+        transform: translateX(4px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .assignment-item.late {
+        border-left-color: var(--danger-color);
+        background: linear-gradient(90deg, rgba(231, 76, 60, 0.05) 0%, white 100%);
+    }
+
+    .assignment-item.completed {
+        border-left-color: var(--success-color);
+        background: linear-gradient(90deg, rgba(46, 204, 113, 0.05) 0%, white 100%);
+    }
+
+.assignment-info {
+    flex: 1;
+}
+
+    .assignment-info h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 6px;
+    }
+
+.assignment-meta {
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.assignment-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-not-submitted {
+    background: var(--danger-color);
+    color: white;
+}
+
+.status-submitted {
+    background: var(--warning-color);
+    color: white;
+}
+
+.status-graded {
+    background: var(--success-color);
+    color: white;
+}
+
+.deadline-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.deadline-urgent {
+    background: var(--danger-color);
+}
+
+.deadline-warning {
+    background: var(--warning-color);
+}
+
+.deadline-normal {
+    background: var(--success-color);
+}
+
+/* Таблицы */
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+    .grades-table th,
+    .grades-table td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    .grades-table th {
+        background: var(--light-gray);
+        font-weight: 600;
+        color: var(--secondary-color);
+        font-size: 14px;
+    }
+
+    .grades-table tr:hover {
+        background: var(--light-gray);
+    }
+
+.grade-excellent {
+    color: var(--success-color);
+    font-weight: 700;
+}
+
+.grade-good {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.grade-average {
+    color: var(--warning-color);
+    font-weight: 700;
+}
+
+.grade-poor {
+    color: var(--danger-color);
+    font-weight: 700;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+    .modal.active {
+        display: flex;
+    }
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--box-shadow-lg);
+    animation: slideInUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--medium-gray);
+    background: var(--light-gray);
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-gray);
+    transition: var(--transition);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .close-modal:hover {
+        background: var(--medium-gray);
+        color: var(--text-color);
+    }
+
+.modal-body {
+    padding: 24px;
+}
+
+/* Загрузка файлов */
+.file-upload {
+    border: 2px dashed var(--medium-gray);
+    border-radius: var(--border-radius);
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: var(--transition);
+    background: var(--light-gray);
+}
+
+    .file-upload:hover {
+        border-color: var(--primary-color);
+        background: rgba(52, 152, 219, 0.05);
+    }
+
+    .file-upload.dragover {
+        border-color: var(--primary-color);
+        background: rgba(52, 152, 219, 0.1);
+    }
+
+    .file-upload p {
+        margin-bottom: 16px;
+        color: var(--text-light);
+    }
+
+.file-list {
+    margin-top: 16px;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    margin-bottom: 8px;
+    transition: var(--transition);
+}
+
+    .file-item:hover {
+        background: var(--medium-gray);
+    }
+
+    .file-item span {
+        font-size: 14px;
+        color: var(--text-color);
+    }
+
+.remove-file {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+    .remove-file:hover {
+        background: var(--danger-color);
+        color: white;
+    }
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    animation: slideInRight 0.3s ease;
+}
+
+.notification-content {
+    background: white;
+    padding: 16px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.notification-success {
+    border-left-color: var(--success-color);
+}
+
+.notification-warning {
+    border-left-color: var(--warning-color);
+}
+
+.notification-error {
+    border-left-color: var(--danger-color);
+}
+
+.close-notification {
+    background: none;
+    border: none;
+    color: var(--dark-gray);
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 12px;
+    transition: var(--transition);
+}
+
+    .close-notification:hover {
+        color: var(--text-color);
+    }
+
+/* Стили для новых модальных окон */
+.student-info, .submission-content {
+    padding: 16px;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+}
+
+.student-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 12px;
+    border: 1px solid var(--medium-gray);
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.student-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.student-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.grade-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.grade-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.grade-label {
+    min-width: 180px;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.grade-progress {
+    flex: 1;
+    height: 20px;
+    background: var(--medium-gray);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.grade-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+    .grade-fill.excellent {
+        background: var(--success-color);
+    }
+
+    .grade-fill.good {
+        background: var(--primary-color);
+    }
+
+    .grade-fill.average {
+        background: var(--warning-color);
+    }
+
+    .grade-fill.poor {
+        background: var(--danger-color);
+    }
+
+.grade-count {
+    min-width: 40px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.notification-type, .format-option, .option-checkbox, .recipient-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+    .notification-type:hover, .format-option:hover, .recipient-option:hover {
+        border-color: var(--primary-color);
+    }
+
+    .notification-type input:checked + span,
+    .format-option input:checked + span,
+    .recipient-option input:checked + span {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+.export-format, .export-options, .reminder-recipients {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option-checkbox {
+    border: none;
+    padding: 8px 0;
+}
+
+select[multiple] {
+    height: 120px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+        .nav-links a {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+    .user-menu {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-group {
+        text-align: center;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .courses-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .assignment-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .assignment-status {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+    }
+
+        .filters-bar .form-control {
+            min-width: 100%;
+        }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .auth-content {
+        padding: 24px;
+    }
+
+    .modal-content {
+        margin: 20px;
+        max-height: calc(100vh - 40px);
+    }
+
+    .grades-table {
+        font-size: 14px;
+    }
+
+        .grades-table th,
+        .grades-table td {
+            padding: 12px 8px;
+        }
+
+    .student-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .student-actions {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+    .grade-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .grade-progress {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-panel {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+    .auth-header {
+        padding: 32px 24px;
+    }
+
+    .auth-tabs {
+        flex-direction: column;
+    }
+
+    .role-selection {
+        flex-direction: column;
+    }
+
+    .notification-content {
+        min-width: auto;
+        margin: 0 16px;
+    }
+}
+
+/* Утилиты */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 {
+    margin-top: 8px;
+}
+
+.mt-2 {
+    margin-top: 16px;
+}
+
+.mt-3 {
+    margin-top: 24px;
+}
+
+.mt-4 {
+    margin-top: 32px;
+}
+
+.mb-1 {
+    margin-bottom: 8px;
+}
+
+.mb-2 {
+    margin-bottom: 16px;
+}
+
+.mb-3 {
+    margin-bottom: 24px;
+}
+
+.mb-4 {
+    margin-bottom: 32px;
+}
+
+.p-1 {
+    padding: 8px;
+}
+
+.p-2 {
+    padding: 16px;
+}
+
+.p-3 {
+    padding: 24px;
+}
+
+.p-4 {
+    padding: 32px;
+}
+
+.d-none {
+    display: none;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-block {
+    display: block;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+/* Специфичные стили для интерфейса преподавателя */
+.teacher-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.bulk-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+}
+
+/* Загрузка */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Темная тема (опционально) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --light-gray: #2d3748;
+        --medium-gray: #4a5568;
+        --dark-gray: #a0aec0;
+        --text-color: #e2e8f0;
+        --text-light: #cbd5e0;
+    }
+
+    body {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    }
+
+    .card,
+    .auth-panel,
+    .filters-bar,
+    .assignment-item,
+    .grades-table {
+        background: var(--light-gray);
+        color: var(--text-color);
+    }
+
+    .form-control {
+        background: var(--medium-gray);
+        border-color: #4a5568;
+        color: var(--text-color);
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+        }
+}
+.course-title {
+    color: #000000 !important;
+}
+/* Пользовательские стили для информации пользователя */
+.user-info {
+    text-align: right;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #000000 !important;
+}
+
+.user-role {
+    font-size: 13px;
+    color: #000000 !important;
+}
+
+.user-group {
+    font-size: 12px;
+    color: #000000 !important;
+    margin-top: 2px;
+}

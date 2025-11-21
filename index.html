@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задания онлайн | tasks.college.edu</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Панель аутентификации -->
+    <div id="authPanel" class="auth-container">
+        <div class="auth-panel">
+            <div class="auth-header">
+                <h1>Задания онлайн</h1>
+                <p>Образовательная платформа</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Вход</div>
+                <div class="auth-tab" data-tab="register">Регистрация</div>
+            </div>
+            
+            <div class="auth-content">
+                <!-- Форма входа -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label class="form-label" for="loginEmail">Email</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="your@email.com" required>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="loginPassword">Пароль</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Введите пароль" required>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-lg w-100">
+                        <span>Войти в систему</span>
+                    </button>
+                    
+                    <div class="auth-switch">
+                        Нет аккаунта? <a onclick="showRegisterForm()">Зарегистрироваться</a>
+                    </div>
+                </form>
+                
+                <!-- Форма регистрации -->
+                <form id="registerForm" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="regFirstName">Имя</label>
+                            <input type="text" class="form-control" id="regFirstName" placeholder="Иван" required>
+                            <div class="error-message" id="regFirstNameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="regLastName">Фамилия</label>
+                            <input type="text" class="form-control" id="regLastName" placeholder="Петров" required>
+                            <div class="error-message" id="regLastNameError"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="regEmail">Email</label>
+                        <input type="email" class="form-control" id="regEmail" placeholder="your@email.com" required>
+                        <div class="error-message" id="regEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Роль</label>
+                        <div class="role-selection">
+                            <div class="role-option-btn selected" data-role="student" onclick="selectRole('student')">
+                                Студент
+                            </div>
+                            <div class="role-option-btn" data-role="teacher" onclick="selectRole('teacher')">
+                                Преподаватель
+                            </div>
+                        </div>
+                        <input type="hidden" id="regRole" value="student" required>
+                        <div class="error-message" id="regRoleError"></div>
+                    </div>
+                    
+                    <!-- Поле группы для студентов -->
+                    <div class="form-group" id="groupField">
+                        <label class="form-label" for="regGroup">Группа</label>
+                        <select class="form-control" id="regGroup" required>
+                            <option value="">Выберите группу</option>
+                            <option value="1-ИСП9-72">1-ИСП9-72</option>
+                            <option value="1-ИСП9-73">1-ИСП9-73</option>
+                            <option value="1-ИСП9-74">1-ИСП9-74</option>
+                            <option value="1-ИСП9-75">1-ИСП9-75</option>
+                            <option value="1-ИСП9-76">1-ИСП9-76</option>
+                            <option value="2-ИСП9-71">2-ИСП9-71</option>
+                            <option value="2-ИСП9-72">2-ИСП9-72</option>
+                            <option value="3-ИСП9-70">3-ИСП9-70</option>
+                            <option value="4-ИСП9-69">4-ИСП9-69</option>
+                        </select>
+                        <div class="error-message" id="regGroupError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="regPassword">Пароль</label>
+                        <input type="password" class="form-control" id="regPassword" placeholder="Создайте пароль" required>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="password-strength-fill"></div>
+                        </div>
+                        <div class="password-requirements">
+                            Минимум 6 символов, буквы и цифры
+                        </div>
+                        <div class="error-message" id="regPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="regConfirmPassword">Подтверждение пароля</label>
+                        <input type="password" class="form-control" id="regConfirmPassword" placeholder="Повторите пароль" required>
+                        <div class="error-message" id="regConfirmPasswordError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-lg w-100">
+                        <span>Зарегистрироваться</span>
+                    </button>
+                    
+                    <div class="auth-switch">
+                        Уже есть аккаунт? <a onclick="showLoginForm()">Войти</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной интерфейс -->
+    <div id="mainInterface" class="d-none">
+        <!-- Шапка сайта -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <a href="#" class="logo">
+                        <span>📚</span> Задания онлайн
+                    </a>
+                    
+                    <ul class="nav-links">
+                        <li><a href="#" class="active">Главная</a></li>
+                    </ul>
+                    
+                    <div class="user-menu">
+                        <div class="user-avatar" id="userAvatar">АС</div>
+                        <div class="user-info">
+                            <div class="user-name" id="userName">Анна Сидорова</div>
+                            <div class="user-role" id="userRole">Студент</div>
+                            <div class="user-group" id="userGroup">1-ИСП9-72</div>
+                        </div>
+                        <button class="btn btn-outline btn-sm" id="logoutBtn">
+                            <span>Выйти</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент -->
+        <main>
+            <div class="container">
+                <!-- Интерфейс студента -->
+                <div id="studentInterface">
+                    <!-- Заголовок страницы -->
+                    <div class="page-header">
+                        <h1 class="page-title">Моя учебная панель</h1>
+                        <div class="current-date" id="currentDate"></div>
+                    </div>
+
+                    <!-- Панель фильтров -->
+                    <div class="filters-bar">
+                        <input type="text" id="searchAssignments" placeholder="Поиск заданий..." class="form-control">
+                        <select id="filterSubject" class="form-control">
+                            <option value="">Все предметы</option>
+                        </select>
+                        <select id="filterStatus" class="form-control">
+                            <option value="">Все статусы</option>
+                            <option value="not-submitted">Не сдано</option>
+                            <option value="submitted">На проверке</option>
+                            <option value="graded">Оценено</option>
+                        </select>
+                    </div>
+
+                    <!-- Панель предметов -->
+                    <div class="courses-panel" id="studentSubjectsPanel">
+                        <!-- Динамически заполняется через JavaScript -->
+                    </div>
+
+                    <!-- Список заданий -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Актуальные задания</h2>
+                        </div>
+                        <div class="assignments-list" id="studentAssignmentsList">
+                            <!-- Динамически заполняется через JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Таблица оценок -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Мои оценки</h2>
+                        </div>
+                        <table class="grades-table" id="studentGradesTable">
+                            <thead>
+                                <tr>
+                                    <th>Предмет</th>
+                                    <th>Задание</th>
+                                    <th>Дата сдачи</th>
+                                    <th>Оценка</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Динамически заполняется через JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Интерфейс преподавателя -->
+                <div id="teacherInterface" class="d-none">
+                    <!-- Заголовок страницы -->
+                    <div class="page-header">
+                        <h1 class="page-title">Панель преподавателя</h1>
+                        <button class="btn" id="createAssignmentBtn">
+                            <span>+ Создать задание</span>
+                        </button>
+                    </div>
+
+                    <!-- Список заданий преподавателя -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Активные задания</h2>
+                        </div>
+                        <div class="assignments-list" id="teacherAssignmentsList">
+                            <!-- Динамически заполняется через JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Работы на проверку -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Работы на проверку</h2>
+                        </div>
+                        <table class="grades-table" id="submissionsForGradingTable">
+                            <thead>
+                                <tr>
+                                    <th>Студент</th>
+                                    <th>Группа</th>
+                                    <th>Задание</th>
+                                    <th>Статус</th>
+                                    <th>Оценка</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Динамически заполняется через JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Модальное окно сдачи задания -->
+    <div class="modal" id="submissionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Сдача работы</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="submissionForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Задание</label>
+                        <div class="assignment-details card">
+                            <h3 id="modalAssignmentTitle">Название задания</h3>
+                            <p id="modalAssignmentDescription" class="mt-2">
+                                Описание задания будет загружено здесь...
+                            </p>
+                            <p class="mt-2"><strong>Предмет:</strong> <span id="modalAssignmentSubject">-</span></p>
+                            <p><strong>Срок сдачи:</strong> <span id="modalAssignmentDeadline">-</span></p>
+                            <p><strong>Максимальный балл:</strong> <span id="modalAssignmentMaxGrade">-</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="submissionText">Комментарий к работе</label>
+                        <textarea class="form-control" id="submissionText" placeholder="Опишите ваше решение, укажите особенности реализации, дополнительные функции..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Прикрепить файлы</label>
+                        <div class="file-upload" id="fileUploadArea">
+                            <p>📎 Перетащите файлы сюда или</p>
+                            <button type="button" class="btn btn-outline" onclick="document.getElementById('fileInput').click()">
+                                Выберите файлы
+                            </button>
+                            <input type="file" id="fileInput" multiple class="d-none">
+                        </div>
+                        <div class="file-list" id="fileList"></div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <span>📤 Отправить на проверку</span>
+                            </button>
+                            <button type="button" class="btn btn-outline close-modal">
+                                <span>Отмена</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно создания задания -->
+    <div class="modal" id="createAssignmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Создание нового задания</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="assignmentForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="assignmentTitle">Название задания</label>
+                        <input type="text" class="form-control" id="assignmentTitle" placeholder="Введите название задания" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="assignmentSubject">Предмет</label>
+                        <select class="form-control" id="assignmentSubject" required>
+                            <option value="">Выберите предмет</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="assignmentGroups">Группы</label>
+                        <select class="form-control" id="assignmentGroups" multiple required>
+                            <option value="all">Все группы</option>
+                            <option value="1-ИСП9-72">1-ИСП9-72</option>
+                            <option value="1-ИСП9-73">1-ИСП9-73</option>
+                            <option value="1-ИСП9-74">1-ИСП9-74</option>
+                            <option value="1-ИСП9-75">1-ИСП9-75</option>
+                            <option value="1-ИСП9-76">1-ИСП9-76</option>
+                            <option value="2-ИСП9-71">2-ИСП9-71</option>
+                            <option value="2-ИСП9-72">2-ИСП9-72</option>
+                            <option value="3-ИСП9-70">3-ИСП9-70</option>
+                            <option value="4-ИСП9-69">4-ИСП9-69</option>
+                        </select>
+                        <div class="form-hint">Для выбора нескольких групп удерживайте Ctrl</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="assignmentDescription">Описание задания</label>
+                        <textarea class="form-control" id="assignmentDescription" placeholder="Подробное описание задания, требования, критерии оценки..." required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="assignmentDeadline">Срок сдачи</label>
+                            <input type="datetime-local" class="form-control" id="assignmentDeadline" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="assignmentMaxGrade">Максимальный балл</label>
+                            <input type="number" class="form-control" id="assignmentMaxGrade" value="100" min="1" max="100" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <span>✅ Создать задание</span>
+                            </button>
+                            <button type="button" class="btn btn-outline close-modal">
+                                <span>Отмена</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно оценки работы -->
+    <div class="modal" id="gradingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Оценка работы</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="gradingForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Студент</label>
+                        <div class="student-info card">
+                            <h3 id="gradingStudentName">Иванов А.А.</h3>
+                            <p id="gradingAssignmentTitle">Лабораторная работа №1: Основы Python</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Работа студента</label>
+                        <div class="submission-content card">
+                            <h4>Комментарий студента:</h4>
+                            <p id="submissionComment">Написал программу для решения квадратных уравнений...</p>
+                            
+                            <h4 class="mt-3">Прикрепленные файлы:</h4>
+                            <div class="file-list" id="submissionFilesList">
+                                <div class="file-item">
+                                    <span>program.py (2.1 MB)</span>
+                                    <button type="button" class="btn btn-sm btn-outline">Скачать</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="gradeInput">Оценка</label>
+                            <input type="number" class="form-control" id="gradeInput" min="0" max="100" placeholder="0-100" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="maxGradeInput">Максимальный балл</label>
+                            <input type="number" class="form-control" id="maxGradeInput" value="100" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="feedbackInput">Комментарий к оценке</label>
+                        <textarea class="form-control" id="feedbackInput" placeholder="Укажите сильные и слабые стороны работы, дайте рекомендации..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <span>✅ Сохранить оценку</span>
+                            </button>
+                            <button type="button" class="btn btn-outline close-modal">
+                                <span>Отмена</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно статистики предметов -->
+    <div class="modal" id="courseStatsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Статистика предмета</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Выберите предмет</label>
+                    <select class="form-control" id="statsSubjectSelect">
+                        <option value="">Выберите предмет</option>
+                    </select>
+                </div>
+                
+                <div id="courseStatsContent" class="d-none">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsTotalStudents">45</div>
+                            <div class="stat-label">Всего студентов</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsActiveStudents">42</div>
+                            <div class="stat-label">Активных</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsAvgGrade">4.2</div>
+                            <div class="stat-label">Средний балл</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsCompletion">78%</div>
+                            <div class="stat-label">Завершение</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h3 class="card-title">Распределение оценок</h3>
+                        </div>
+                        <div class="grade-distribution">
+                            <div class="grade-bar">
+                                <span class="grade-label">Отлично (90-100)</span>
+                                <div class="grade-progress">
+                                    <div class="grade-fill excellent" style="width: 35%"></div>
+                                </div>
+                                <span class="grade-count">35%</span>
+                            </div>
+                            <div class="grade-bar">
+                                <span class="grade-label">Хорошо (75-89)</span>
+                                <div class="grade-progress">
+                                    <div class="grade-fill good" style="width: 45%"></div>
+                                </div>
+                                <span class="grade-count">45%</span>
+                            </div>
+                            <div class="grade-bar">
+                                <span class="grade-label">Удовлетворительно (60-74)</span>
+                                <div class="grade-progress">
+                                    <div class="grade-fill average" style="width: 15%"></div>
+                                </div>
+                                <span class="grade-count">15%</span>
+                            </div>
+                            <div class="grade-bar">
+                                <span class="grade-label">Неудовлетворительно (<60)</span>
+                                <div class="grade-progress">
+                                    <div class="grade-fill poor" style="width: 5%"></div>
+                                </div>
+                                <span class="grade-count">5%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn btn-outline">
+                            <span>📊 Экспорт статистики</span>
+                        </button>
+                        <button class="btn btn-outline">
+                            <span>📧 Отчет по email</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно управления студентами -->
+    <div class="modal" id="manageStudentsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Управление студентами</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Выберите группу</label>
+                    <select class="form-control" id="studentsGroupSelect">
+                        <option value="">Выберите группу</option>
+                        <option value="1-ИСП9-72">1-ИСП9-72</option>
+                        <option value="1-ИСП9-73">1-ИСП9-73</option>
+                        <option value="1-ИСП9-74">1-ИСП9-74</option>
+                        <option value="1-ИСП9-75">1-ИСП9-75</option>
+                        <option value="1-ИСП9-76">1-ИСП9-76</option>
+                        <option value="2-ИСП9-71">2-ИСП9-71</option>
+                        <option value="2-ИСП9-72">2-ИСП9-72</option>
+                        <option value="3-ИСП9-70">3-ИСП9-70</option>
+                        <option value="4-ИСП9-69">4-ИСП9-69</option>
+                    </select>
+                </div>
+                
+                <div id="studentsListContent" class="d-none">
+                    <div class="filters-bar">
+                        <input type="text" placeholder="Поиск студентов..." class="form-control">
+                        <button class="btn btn-outline btn-sm">Добавить студента</button>
+                    </div>
+                    
+                    <div class="students-list mt-3">
+                        <div class="student-item">
+                            <div class="student-info">
+                                <div class="student-avatar">АА</div>
+                                <div>
+                                    <h4>Александров А.А.</h4>
+                                    <p class="student-email">alexandrov@college.edu</p>
+                                </div>
+                            </div>
+                            <div class="student-stats">
+                                <span>Средний балл: 4.5</span>
+                                <span>Выполнено: 8/10</span>
+                            </div>
+                            <div class="student-actions">
+                                <button class="btn btn-sm btn-outline">Профиль</button>
+                                <button class="btn btn-sm btn-warning">Исключить</button>
+                            </div>
+                        </div>
+                        
+                        <div class="student-item">
+                            <div class="student-info">
+                                <div class="student-avatar">ББ</div>
+                                <div>
+                                    <h4>Борисова Б.Б.</h4>
+                                    <p class="student-email">borisova@college.edu</p>
+                                </div>
+                            </div>
+                            <div class="student-stats">
+                                <span>Средний балл: 4.8</span>
+                                <span>Выполнено: 9/10</span>
+                            </div>
+                            <div class="student-actions">
+                                <button class="btn btn-sm btn-outline">Профиль</button>
+                                <button class="btn btn-sm btn-warning">Исключить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно массовых уведомлений -->
+    <div class="modal" id="bulkNotificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Отправка уведомления</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="bulkNotificationForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Получатели</label>
+                        <select class="form-control" id="notificationRecipients" multiple>
+                            <option value="all">Все студенты</option>
+                            <option value="1-ИСП9-72">Группа 1-ИСП9-72</option>
+                            <option value="1-ИСП9-73">Группа 1-ИСП9-73</option>
+                            <option value="1-ИСП9-74">Группа 1-ИСП9-74</option>
+                            <option value="overdue">Студенты с просроченными заданиями</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="notificationSubject">Тема сообщения</label>
+                        <input type="text" class="form-control" id="notificationSubject" placeholder="Введите тему сообщения" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="notificationMessage">Сообщение</label>
+                        <textarea class="form-control" id="notificationMessage" placeholder="Введите текст сообщения..." rows="6" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Тип уведомления</label>
+                        <div class="d-flex gap-2">
+                            <label class="notification-type">
+                                <input type="radio" name="notificationType" value="info" checked>
+                                <span>📢 Информация</span>
+                            </label>
+                            <label class="notification-type">
+                                <input type="radio" name="notificationType" value="warning">
+                                <span>⚠️ Важное</span>
+                            </label>
+                            <label class="notification-type">
+                                <input type="radio" name="notificationType" value="reminder">
+                                <span>⏰ Напоминание</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <span>📤 Отправить уведомление</span>
+                            </button>
+                            <button type="button" class="btn btn-outline close-modal">
+                                <span>Отмена</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно экспорта оценок -->
+    <div class="modal" id="exportGradesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Экспорт оценок</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="exportGradesForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Предмет для экспорта</label>
+                        <select class="form-control" id="exportSubjectSelect" required>
+                            <option value="">Выберите предмет</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Формат экспорта</label>
+                        <div class="export-format">
+                            <label class="format-option">
+                                <input type="radio" name="exportFormat" value="excel" checked>
+                                <span>📊 Excel (.xlsx)</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="exportFormat" value="csv">
+                                <span>📝 CSV (.csv)</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="exportFormat" value="pdf">
+                                <span>📄 PDF (.pdf)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Период</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="date" class="form-control" id="exportDateFrom">
+                            </div>
+                            <div class="form-group">
+                                <input type="date" class="form-control" id="exportDateTo">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дополнительные опции</label>
+                        <div class="export-options">
+                            <label class="option-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Включить средний балл</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Включить комментарии</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox">
+                                <span>Только завершенные задания</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <span>📥 Экспортировать данные</span>
+                            </button>
+                            <button type="button" class="btn btn-outline close-modal">
+                                <span>Отмена</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подключаем JS файлы -->
+    <script src="js/db.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/file-upload.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/assignments.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
